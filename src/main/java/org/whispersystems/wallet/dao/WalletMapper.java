@@ -17,7 +17,7 @@ public class WalletMapper implements ResultSetMapper<WalletEntity> {
     public WalletEntity map(int i, ResultSet resultSet, StatementContext statementContext) throws SQLException {
         return new WalletEntity(
                 resultSet.getString(PHONE_NUMBER),
-                WalletType.of(resultSet.getString(WALLET_TYPE)),
+                WalletType.valueOf(resultSet.getString(WALLET_TYPE)),
                 resultSet.getString(WALLET_ADDRESS)
         );
     }
