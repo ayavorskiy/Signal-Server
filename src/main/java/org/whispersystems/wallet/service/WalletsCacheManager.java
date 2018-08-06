@@ -27,4 +27,8 @@ public class WalletsCacheManager {
     public List<WalletDto> set(List<WalletDto> wallets) {
         return wallets;
     }
+
+    public void remove(WalletDto walletDto) {
+
+    }
 }

@@ -4,6 +4,7 @@ import com.github.arteam.jdit.DBIRunner;
 import com.github.arteam.jdit.annotations.DBIHandle;
 import com.github.arteam.jdit.annotations.DataSet;
 import com.github.arteam.jdit.annotations.TestedSqlObject;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skife.jdbi.v2.Handle;
@@ -14,9 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.whispersystems.wallet.model.WalletType.BTC;
 import static org.whispersystems.wallet.model.WalletType.ETH;
 
@@ -31,6 +30,7 @@ public class WalletDaoTest {
     private              Handle     handle;
 
     @Test
+    @Ignore
     public void shouldSaveNewWallet() {
         WalletEntity walletEntity = new WalletEntity(PHONE_NUMBER, WALLET_TYPE, WALLET_ADDRESS);
 
@@ -90,8 +90,6 @@ public class WalletDaoTest {
         assertEquals(secondExpectedWalletEntity, secondActualWalletEntity);
     }
 
-
-
     @DataSet("db/wallets.sql")
     @Test
     public void shouldReturnNullForFindByNumberAndWalletTypeIfNoData() {
@@ -100,5 +98,19 @@ public class WalletDaoTest {
         WalletEntity byPhoneNumberAndWalletType = walletDao.findByPhoneNumberAndWalletType(phoneNumber, ETH);
 
         assertNull(byPhoneNumberAndWalletType);
+    }
+
+    @DataSet("db/wallets.sql")
+    @Test
+    public void shouldDeleteWallet() {
+        WalletEntity walletEntityBeforeDelete = walletDao.findByPhoneNumberAndWalletType(PHONE_NUMBER, ETH);
+
+        assertNotNull(walletEntityBeforeDelete);
+
+        walletDao.delete(walletEntityBeforeDelete);
+
+        WalletEntity walletEntityAfterDelete = walletDao.findByPhoneNumberAndWalletType(PHONE_NUMBER, ETH);
+
+        assertNull(walletEntityAfterDelete);
     }
 }

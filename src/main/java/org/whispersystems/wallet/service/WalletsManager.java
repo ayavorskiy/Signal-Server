@@ -68,4 +68,11 @@ public class WalletsManager {
         return walletDto;
     }
 
+    public void deleteWallet(WalletDto walletDto) {
+        log.debug("Trying to delete wallet {} from the database.", walletDto);
+        walletDao.delete(walletDto.toEntity());
+        log.debug("Wallet {} has been deleted from the database, removing it from cache.", walletDto);
+        cacheManager.remove(walletDto);
+        log.debug("Wallet {} has been removed from cache.", walletDto);
+    }
 }
