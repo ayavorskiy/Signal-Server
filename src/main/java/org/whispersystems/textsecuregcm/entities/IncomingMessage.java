@@ -80,4 +80,19 @@ public class IncomingMessage {
   public boolean isSilent() {
     return silent;
   }
+
+  @Override
+  public String toString() {
+    return "IncomingMessage{" +
+            "type=" + type +
+            ", destination='" + destination + '\'' +
+            ", destinationDeviceId=" + destinationDeviceId +
+            ", destinationRegistrationId=" + destinationRegistrationId +
+            ", body='" + body + '\'' +
+            ", content='" + content + '\'' +
+            ", relay='" + relay + '\'' +
+            ", timestamp=" + timestamp +
+            ", silent=" + silent +
+            '}';
+  }
 }

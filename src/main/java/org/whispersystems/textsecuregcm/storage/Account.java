@@ -215,4 +215,18 @@ public class Account {
   public void setPin(String pin) {
     this.pin = pin;
   }
+
+  @Override
+  public String toString() {
+    return "Account{" +
+            "number='" + number + '\'' +
+            ", devices=" + devices +
+            ", identityKey='" + identityKey + '\'' +
+            ", name='" + name + '\'' +
+            ", avatar='" + avatar + '\'' +
+            ", avatarDigest='" + avatarDigest + '\'' +
+            ", pin='" + pin + '\'' +
+            ", authenticatedDevice=" + authenticatedDevice +
+            '}';
+  }
 }
