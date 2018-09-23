@@ -38,4 +38,12 @@ public class StoredVerificationCode {
 
     return MessageDigest.isEqual(ourCode, theirCode);
   }
+
+  @Override
+  public String toString() {
+    return "StoredVerificationCode{" +
+            "code='" + code + '\'' +
+            ", timestamp=" + timestamp +
+            '}';
+  }
 }

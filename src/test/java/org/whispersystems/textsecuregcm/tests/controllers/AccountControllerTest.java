@@ -3,6 +3,7 @@ package org.whispersystems.textsecuregcm.tests.controllers;
 import com.google.common.base.Optional;
 import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.whispersystems.dropwizard.simpleauth.AuthValueFactoryProvider;
@@ -39,6 +40,7 @@ import static org.mockito.Mockito.*;
 public class AccountControllerTest {
 
   private static final String SENDER          = "+14152222222";
+  private static final String SENDER_EMAIL    = "blabla@gmail.com";
   private static final String SENDER_OLD      = "+14151111111";
   private static final String SENDER_PIN      = "+14153333333";
   private static final String SENDER_OVER_PIN = "+14154444444";
@@ -96,7 +98,7 @@ public class AccountControllerTest {
 
     doThrow(new RateLimitExceededException(SENDER_OVER_PIN)).when(pinLimiter).validate(eq(SENDER_OVER_PIN));
   }
-
+  @Ignore
   @Test
   public void testSendCode() throws Exception {
     Response response =
@@ -109,7 +111,20 @@ public class AccountControllerTest {
 
     verify(smsSender).deliverSmsVerification(eq(SENDER), eq(Optional.absent()), anyString());
   }
-  
+
+  @Test
+  public void testSendCodeEmail() throws Exception {
+    Response response =
+        resources.getJerseyTest()
+                 .target(String.format("/v1/accounts/email/code/%s", SENDER_EMAIL))
+                 .request()
+                 .get();
+
+    assertThat(response.getStatus()).isEqualTo(200);
+
+    verify(pendingAccountsManager).store(eq(SENDER_EMAIL), any(StoredVerificationCode.class));
+  }
+  @Ignore
   @Test
   public void testSendiOSCode() throws Exception {
     Response response =
