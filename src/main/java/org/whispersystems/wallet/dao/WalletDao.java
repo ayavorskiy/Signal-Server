@@ -17,7 +17,7 @@ public interface WalletDao {
 
     @SqlUpdate("INSERT INTO wallets (" + PHONE_NUMBER + ", " + WALLET_TYPE + ", " + WALLET_ADDRESS + ") " +
                "VALUES (:" + PHONE_NUMBER + ", :" + WALLET_TYPE + ", :" + WALLET_ADDRESS + ")" +
-               "ON CONFLICT (" + PHONE_NUMBER + ", " + WALLET_TYPE + ") DO UPDATE SET " + WALLET_ADDRESS + " = :" + WALLET_ADDRESS + ")")
+               "ON CONFLICT (" + PHONE_NUMBER + ", " + WALLET_TYPE + ") DO UPDATE SET " + WALLET_ADDRESS + " = :" + WALLET_ADDRESS )
     void save(@WalletBinder WalletEntity walletEntity);
 
     @Mapper(WalletMapper.class)
