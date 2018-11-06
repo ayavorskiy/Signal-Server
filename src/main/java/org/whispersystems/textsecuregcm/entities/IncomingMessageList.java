@@ -52,4 +52,13 @@ public class IncomingMessageList {
   public long getTimestamp() {
     return timestamp;
   }
+
+  @Override
+  public String toString() {
+    return "IncomingMessageList{" +
+            "messages=" + messages +
+            ", relay='" + relay + '\'' +
+            ", timestamp=" + timestamp +
+            '}';
+  }
 }

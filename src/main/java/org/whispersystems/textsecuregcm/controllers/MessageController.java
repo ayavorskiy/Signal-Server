@@ -101,6 +101,7 @@ public class MessageController {
                                          @Valid                    IncomingMessageList messages)
       throws IOException, RateLimitExceededException
   {
+      logger.info("SEND MESSAGE REQUEST, Account: {}, Destinations: {}, messages:{}", source, destinationName, messages);
     if (!source.getNumber().equals(destinationName)) {
       rateLimiters.getMessagesLimiter().validate(source.getNumber() + "__" + destinationName);
     }
