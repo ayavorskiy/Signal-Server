@@ -23,9 +23,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class Util {
-
+  public static final Pattern VALID_EMAIL_ADDRESS_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
   public static byte[] getContactToken(String number) {
     try {
       MessageDigest digest    = MessageDigest.getInstance("SHA1");
@@ -40,6 +41,11 @@ public class Util {
 
   public static String getEncodedContactToken(String number) {
     return Base64.encodeBytesWithoutPadding(getContactToken(number));
+  }
+
+  public static boolean isValidEmail(String email) {
+    return VALID_EMAIL_ADDRESS_PATTERN.matcher(email)
+                                      .find();
   }
 
   public static boolean isValidNumber(String number) {

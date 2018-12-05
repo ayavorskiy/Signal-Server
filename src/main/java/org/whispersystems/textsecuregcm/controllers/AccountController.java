@@ -106,16 +106,16 @@ public class AccountController {
   @GET
   @Path("/{transport}/code/{number}")
   public Response createAccount(@PathParam("transport") String transport,
-                                @PathParam("number")    String number,
+                                @PathParam("number")    String email,
                                 @QueryParam("client")   Optional<String> client)
       throws IOException, RateLimitExceededException
   {
-    if (!Util.isValidNumber(number)) {
-      logger.debug("Invalid number: " + number);
+    if (!Util.isValidEmail(email)) {
+      logger.debug("Invalid number: " + email);
       throw new WebApplicationException(Response.status(400).build());
     }
 
-    switch (transport) {
+    /*switch (transport) {
       case "sms":
         rateLimiters.getSmsDestinationLimiter().validate(number);
         break;
@@ -125,20 +125,22 @@ public class AccountController {
         break;
       default:
         throw new WebApplicationException(Response.status(422).build());
-    }
+    }*/
 
-    VerificationCode       verificationCode       = generateVerificationCode(number);
+    VerificationCode       verificationCode       = generateVerificationCode(email);
     StoredVerificationCode storedVerificationCode = new StoredVerificationCode(verificationCode.getVerificationCode(),
                                                                                System.currentTimeMillis());
 
-    pendingAccounts.store(number, storedVerificationCode);
+    pendingAccounts.store(email, storedVerificationCode);
 
-    if (testDevices.containsKey(number)) {
+    if (testDevices.containsKey(email)) {
       // noop
-    } else if (transport.equals("sms")) {
+    }/* else if (transport.equals("sms")) {
       smsSender.deliverSmsVerification(number, client, verificationCode.getVerificationCodeDisplay());
     } else if (transport.equals("voice")) {
       smsSender.deliverVoxVerification(number, verificationCode.getVerificationCodeSpeech());
+    }*/ else if ("email".equals(transport)){
+      //do smthn
     }
 
     return Response.ok().build();
@@ -345,12 +347,13 @@ public class AccountController {
   }
 
   @VisibleForTesting protected VerificationCode generateVerificationCode(String number) {
+    return new VerificationCode(111111111);/*
     if (testDevices.containsKey(number)) {
       return new VerificationCode(testDevices.get(number));
     }
 
     SecureRandom random = new SecureRandom();
     int randomInt       = 100000 + random.nextInt(900000);
-    return new VerificationCode(randomInt);
+    return new VerificationCode(randomInt);*/
   }
 }
